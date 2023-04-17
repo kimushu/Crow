@@ -28,6 +28,13 @@ check_required_components("@PROJECT_NAME@")
 get_target_property(_CROW_ILL Crow::Crow INTERFACE_LINK_LIBRARIES)
 get_target_property(_CROW_ICD Crow::Crow INTERFACE_COMPILE_DEFINITIONS)
 
+if(NOT _CROW_ILL)
+  set(_CROW_ILL "")
+endif()
+if(NOT _CROW_ICD)
+  set(_CROW_ICD "")
+endif()
+
 list(REMOVE_ITEM _CROW_ILL "ZLIB::ZLIB" "OpenSSL::SSL")
 list(REMOVE_ITEM _CROW_ICD "CROW_ENABLE_SSL" "CROW_ENABLE_COMPRESSION")
 
