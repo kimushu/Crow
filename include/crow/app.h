@@ -25,16 +25,16 @@
 #endif
 
 #ifdef CROW_MSVC_WORKAROUND
-#define CROW_ROUTE(app, url) app.route_dynamic(url)
-#define CROW_BP_ROUTE(blueprint, url) blueprint.new_rule_dynamic(url)
+#define CROW_ROUTE(app, url) (app).route_dynamic(url)
+#define CROW_BP_ROUTE(blueprint, url) (blueprint).new_rule_dynamic(url)
 #else
-#define CROW_ROUTE(app, url) app.template route<crow::black_magic::get_parameter_tag(url)>(url)
-#define CROW_BP_ROUTE(blueprint, url) blueprint.new_rule_tagged<crow::black_magic::get_parameter_tag(url)>(url)
-#define CROW_WEBSOCKET_ROUTE(app, url) app.route<crow::black_magic::get_parameter_tag(url)>(url).websocket<std::remove_reference<decltype(app)>::type>(&app)
+#define CROW_ROUTE(app, url) (app).template route<crow::black_magic::get_parameter_tag(url)>(url)
+#define CROW_BP_ROUTE(blueprint, url) (blueprint).new_rule_tagged<crow::black_magic::get_parameter_tag(url)>(url)
+#define CROW_WEBSOCKET_ROUTE(app, url) (app).route<crow::black_magic::get_parameter_tag(url)>(url).websocket<std::remove_reference<decltype(app)>::type>(&(app))
 #define CROW_MIDDLEWARES(app, ...) template middlewares<typename std::remove_reference<decltype(app)>::type, __VA_ARGS__>()
 #endif
-#define CROW_CATCHALL_ROUTE(app) app.catchall_route()
-#define CROW_BP_CATCHALL_ROUTE(blueprint) blueprint.catchall_rule()
+#define CROW_CATCHALL_ROUTE(app) (app).catchall_route()
+#define CROW_BP_CATCHALL_ROUTE(blueprint) (blueprint).catchall_rule()
 
 namespace crow
 {
@@ -187,7 +187,7 @@ namespace crow
             bindaddr_ = bindaddr;
             return *this;
         }
-        
+
         /// Get the address that Crow will handle requests on
         std::string bindaddr()
         {
@@ -208,7 +208,7 @@ namespace crow
             concurrency_ = concurrency;
             return *this;
         }
-        
+
         /// Get the number of threads that server is using
         std::uint16_t concurrency()
         {
