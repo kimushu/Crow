@@ -1611,6 +1611,14 @@ namespace crow
                 return *this;
             }
 
+            wvalue& operator=(std::string&& str)
+            {
+                reset();
+                t_ = type::String;
+                s = std::move(str);
+                return *this;
+            }
+
             wvalue& operator=(list&& v)
             {
                 if (t_ != type::List)
